@@ -131,6 +131,25 @@ export default function Profile() {
       showListingsError(true);
     }
   };
+  const handleListingDelete = async (listingId) => {
+    if (window.confirm("Are you sure you want to delete ?")) {
+      try {
+        const res = await fetch(`/api/listing/delete/${listingId}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+        if (data.success === false) {
+          console.log(data.message);
+          return;
+        }
+        setUserListings((prev) =>
+          prev.filter((listing) => listing._id !== listingId)
+        );
+      } catch (error) {
+        console.log("Error deleting listing.");
+      }
+    }
+  };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
